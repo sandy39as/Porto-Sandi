@@ -209,7 +209,7 @@ const AboutPage = () => {
                 data-aos-duration="1300"
                 itemProp="name"
               >
-                Eki Zulfar Rachman
+                Sandi Aditya Ramdani
               </span>
             </h2>
             
