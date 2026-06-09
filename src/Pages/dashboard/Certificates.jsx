@@ -4,8 +4,8 @@ import { Award, Upload, Trash2, ImageIcon, Plus } from 'lucide-react'
 
 const Card = ({ children, className = '' }) => (
   <div className={`relative group ${className}`}>
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10 group-hover:opacity-25 transition duration-500" />
-    <div className="relative bg-white/5 backdrop-blur-xl border border-white/12 rounded-2xl h-full">
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-neutral-400 rounded-2xl blur opacity-10 group-hover:opacity-25 transition duration-500" />
+    <div className="relative bg-neutral-900/70 backdrop-blur-xl border border-white/12 rounded-2xl h-full">
       {children}
     </div>
   </div>
@@ -13,9 +13,9 @@ const Card = ({ children, className = '' }) => (
 
 const SkeletonCard = () => (
   <div className="relative">
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10" />
-    <div className="relative bg-white/5 border border-white/12 rounded-2xl overflow-hidden">
-      <div className="w-full aspect-[16/11.5] bg-white/5 animate-pulse" />
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-neutral-400 rounded-2xl blur opacity-10" />
+    <div className="relative bg-neutral-900/70 border border-white/12 rounded-2xl overflow-hidden">
+      <div className="w-full aspect-[16/11.5] bg-neutral-900/70 animate-pulse" />
     </div>
   </div>
 )
@@ -25,11 +25,11 @@ const CertCard = ({ cert, onDelete }) => {
 
   return (
     <div className="relative group">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10 group-hover:opacity-30 transition duration-500" />
-      <div className="relative bg-white/5 border border-white/12 rounded-2xl overflow-hidden">
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-neutral-400 rounded-2xl blur opacity-10 group-hover:opacity-30 transition duration-500" />
+      <div className="relative bg-neutral-900/70 border border-white/12 rounded-2xl overflow-hidden">
         {/* Skeleton shown until image loads */}
         {!imgLoaded && (
-          <div className="w-full aspect-[16/11.5] bg-white/5 animate-pulse" />
+          <div className="w-full aspect-[16/11.5] bg-neutral-900/70 animate-pulse" />
         )}
         <img
           src={cert.Img}
@@ -97,9 +97,9 @@ export default function Certificates() {
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-xl blur opacity-50" />
-          <div className="relative w-9 h-9 bg-[#030014] rounded-xl border border-white/15 flex items-center justify-center">
-            <Award className="w-4 h-4 text-indigo-400" />
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-neutral-400 rounded-xl blur opacity-50" />
+          <div className="relative w-9 h-9 bg-[#050505] rounded-xl border border-white/15 flex items-center justify-center">
+            <Award className="w-4 h-4 text-neutral-300" />
           </div>
         </div>
         <div>
@@ -114,7 +114,7 @@ export default function Certificates() {
       <Card>
         <div className="p-5 sm:p-6 space-y-4">
           <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-            <Plus className="w-4 h-4 text-indigo-400" /> Upload Certificate
+            <Plus className="w-4 h-4 text-neutral-300" /> Upload Certificate
           </h2>
 
           <label
@@ -130,7 +130,7 @@ export default function Certificates() {
             ) : (
               <div className="text-center space-y-2 p-6">
                 <div className="w-11 h-11 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto">
-                  <ImageIcon className="w-5 h-5 text-indigo-400" />
+                  <ImageIcon className="w-5 h-5 text-neutral-300" />
                 </div>
                 <p className="text-sm text-gray-300">Drag & drop or click to upload</p>
                 <p className="text-xs text-gray-600">PNG, JPG, WEBP supported</p>
@@ -144,13 +144,13 @@ export default function Certificates() {
               <p className="text-xs text-gray-400 truncate flex-1">{file.name}</p>
               <div className="flex gap-2 shrink-0">
                 <button onClick={() => { setFile(null); setPreview(null) }}
-                  className="px-3 py-1.5 rounded-xl border border-white/10 text-gray-500 hover:text-white text-xs transition-colors">
+                  className="px-3 py-1.5 rounded-xl border border-neutral-800 text-gray-500 hover:text-white text-xs transition-colors">
                   Clear
                 </button>
                 <button onClick={uploadImage} disabled={uploading} className="relative group/u">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4f52c9] to-[#8644c5] rounded-xl opacity-60 blur group-hover/u:opacity-100 transition duration-300" />
-                  <div className="relative flex items-center gap-2 px-4 py-1.5 bg-[#030014] rounded-xl border border-white/10">
-                    {uploading ? <div className="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : <Upload className="w-3.5 h-3.5 text-indigo-400" />}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-neutral-200 to-neutral-500 rounded-xl opacity-60 blur group-hover/u:opacity-100 transition duration-300" />
+                  <div className="relative flex items-center gap-2 px-4 py-1.5 bg-[#050505] rounded-xl border border-neutral-800">
+                    {uploading ? <div className="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : <Upload className="w-3.5 h-3.5 text-neutral-300" />}
                     <span className="text-xs text-gray-200">{uploading ? 'Uploading...' : 'Upload'}</span>
                   </div>
                 </button>

@@ -124,7 +124,7 @@ const SocialLinks = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="group relative flex items-center justify-between p-4 rounded-lg 
-                     bg-white/5 border border-white/10 overflow-hidden
+                     bg-neutral-900/70 border border-neutral-800 overflow-hidden
                      hover:border-white/20 transition-all duration-500"
           data-aos="fade-up"
           data-aos-delay="100" 
@@ -188,7 +188,7 @@ const SocialLinks = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="group relative flex items-center gap-3 p-4 rounded-xl 
-                               bg-white/5 border border-white/10 overflow-hidden
+                               bg-neutral-900/70 border border-neutral-800 overflow-hidden
                                hover:border-white/20 transition-all duration-500"
               data-aos="fade-up" 
               data-aos-delay={200 + index * 100} 
@@ -247,7 +247,7 @@ const SocialLinks = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="group relative flex items-center gap-3 p-4 rounded-xl 
-                               bg-white/5 border border-white/10 overflow-hidden
+                               bg-neutral-900/70 border border-neutral-800 overflow-hidden
                                hover:border-white/20 transition-all duration-500"
               data-aos="fade-up" 
               data-aos-delay={400 + index * 100}

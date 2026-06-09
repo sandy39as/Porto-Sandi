@@ -7,7 +7,7 @@ const ProjectCardModal = ({ title, description, link }) => {
   return (
     <>
       <button
-        className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/90 transition-colors duration-200"
+        className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-neutral-900/70 hover:bg-white/10 text-white/90 transition-colors duration-200"
         onClick={() => setIsOpen(true)}
       >
         <span className="text-sm">Details</span>

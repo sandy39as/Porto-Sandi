@@ -81,7 +81,7 @@ export default function PresenceWidget() {
       coding: {
         bg: "from-blue-500/15 to-indigo-500/10",
         border: "border-blue-500/30",
-        text: "text-blue-400",
+        text: "text-neutral-300",
         badge: "bg-blue-500/20 border-blue-400/40",
         glow: "shadow-blue-500/20"
       },
@@ -95,7 +95,7 @@ export default function PresenceWidget() {
       default: {
         bg: "from-purple-500/15 to-violet-500/10",
         border: "border-purple-500/30",
-        text: "text-purple-400",
+        text: "text-neutral-300",
         badge: "bg-purple-500/20 border-purple-400/40",
         glow: "shadow-purple-500/20"
       }
