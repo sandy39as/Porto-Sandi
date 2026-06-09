@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useState, lazy, Suspense } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
+
 import Navbar from "./components/Navbar";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
@@ -20,92 +21,95 @@ const WelcomeScreen = lazy(() => import("./Pages/WelcomeScreen"));
 const NotFoundPage = lazy(() => import("./Pages/404"));
 
 const LandingPage = ({ showWelcome, setShowWelcome }) => {
-  return (
-    <>
-      <AnimatePresence mode="wait">
-        {showWelcome && (
-          <Suspense fallback={null}>
-            <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
-          </Suspense>
-        )}
-      </AnimatePresence>
-
-      {!showWelcome && (
+    return (
         <>
-          <Navbar />
-      
-          <Home />
-          <About />
-          <Suspense fallback={<div className="h-20" />}>
-            <Portofolio />
-            <ContactPage />
-          </Suspense>
-          <Footer />
+            <AnimatePresence mode="wait">
+                {showWelcome && (
+                    <Suspense fallback={null}>
+                        <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
+                    </Suspense>
+                )}
+            </AnimatePresence>
+
+            {!showWelcome && (
+                <div className="relative z-10">
+                    <Navbar />
+                    <Home />
+                    <About />
+
+                    <Suspense fallback={<div className="h-20" />}>
+                        <Portofolio />
+                        <ContactPage />
+                    </Suspense>
+
+                    <Footer />
+                </div>
+            )}
         </>
-      )}
-    </>
-  );
+    );
 };
 
 const ProjectPageLayout = () => (
-  <>
-    <Suspense fallback={<div className="min-h-screen" />}>
-      <ProjectDetails />
-    </Suspense>
-    <Footer />
-  </>
+    <div className="relative z-10">
+        <Suspense fallback={<div className="min-h-screen" />}>
+            <ProjectDetails />
+        </Suspense>
+        <Footer />
+    </div>
 );
 
 function App() {
-  const [showWelcome, setShowWelcome] = useState(true);
+    const [showWelcome, setShowWelcome] = useState(true);
 
-  return (
-    
-    <HelmetProvider>
-      <div className="pointer-events-none">
-  <AnimatedBackground />
-</div>
-      <BrowserRouter>
-        <Routes>
-          {/* PUBLIC */}
-          <Route
-            path="/"
-            element={
-              <LandingPage
-                showWelcome={showWelcome}
-                setShowWelcome={setShowWelcome}
-              />
-            }
-          />
+    return (
+        <HelmetProvider>
+            <BrowserRouter>
+                <div className="relative min-h-screen bg-[#050505] text-white">
+                    <div className="fixed inset-0 z-0 pointer-events-none">
+                        <AnimatedBackground />
+                    </div>
 
-          <Route path="/project/:slug" element={<ProjectPageLayout />} />
+                    <Routes>
+                        {/* PUBLIC */}
+                        <Route
+                            path="/"
+                            element={
+                                <LandingPage
+                                    showWelcome={showWelcome}
+                                    setShowWelcome={setShowWelcome}
+                                />
+                            }
+                        />
 
-          {/* AUTH */}
-          <Route path="/login" element={<Login />} />
+                        <Route path="/project/:slug" element={<ProjectPageLayout />} />
 
-          {/* ADMIN (PROTECTED) */}
-          <Route
-            path="/dashboard/*"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+                        {/* AUTH */}
+                        <Route path="/login" element={<Login />} />
 
-          {/* 404 */}
-          <Route
-            path="*"
-            element={
-              <Suspense fallback={null}>
-                <NotFoundPage />
-              </Suspense>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </HelmetProvider>
-  );
+                        {/* ADMIN */}
+                        <Route
+                            path="/dashboard/*"
+                            element={
+                                <ProtectedRoute>
+                                    <Dashboard />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        {/* 404 */}
+                        <Route
+                            path="*"
+                            element={
+                                <Suspense fallback={null}>
+                                    <NotFoundPage />
+                                </Suspense>
+                            }
+                        />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </HelmetProvider>
+    );
 }
 
 export default App;
