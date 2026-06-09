@@ -280,7 +280,7 @@ const Home = () => {
                                         <img
                                             src="Animation1.gif"
                                             alt="IT Programmer Animation"
-                                            className={`w-full h-full object-contain transition-all duration-500 ${isHovering
+                                            className={`w-full h-full object-contain grayscale contrast-125 brightness-90 transition-all duration-500 ${isHovering
                                                     ? "scale-[95%] sm:scale-[90%] md:scale-[90%] lg:scale-[90%] rotate-2"
                                                     : "scale-[90%] sm:scale-[80%] md:scale-[80%] lg:scale-[80%]"
                                                 }`}
