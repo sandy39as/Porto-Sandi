@@ -4,7 +4,8 @@ import { Github, Linkedin, Mail, ExternalLink, Instagram, Sparkles } from "lucid
 import AOS from "aos"
 import "aos/dist/aos.css"
 
-const SITE_URL = "https://www.linkedin.com/in/sandiadityaramdani/"
+const SITE_URL = "https://hiradev.com/sandiaditya/";
+const META_IMAGE = "https://hiradev.com/sandiaditya/Meta.png";
 
 const StatusBadge = memo(() => (
     <div className="inline-block animate-float lg:mx-0" data-aos="zoom-in" data-aos-delay="400">
@@ -177,13 +178,27 @@ const Home = () => {
                 <meta name="robots" content="index, follow" />
                 <link rel="canonical" href={SITE_URL} />
 
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={SITE_URL} />
                 <meta property="og:title" content="Sandi Aditya Ramdani — IT Programmer & Data Analyst" />
                 <meta
                     property="og:description"
                     content="Portfolio Sandi Aditya Ramdani, berisi project web application, data analysis, IoT, IT support, dan digital system development."
                 />
-                <meta property="og:url" content={SITE_URL} />
-                <meta property="og:type" content="website" />
+                <meta property="og:image" content={META_IMAGE} />
+                <meta property="og:image:secure_url" content={META_IMAGE} />
+                <meta property="og:image:type" content="image/png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content={SITE_URL} />
+                <meta name="twitter:title" content="Sandi Aditya Ramdani — IT Programmer & Data Analyst" />
+                <meta
+                    name="twitter:description"
+                    content="Portfolio resmi Sandi Aditya Ramdani, berisi project web application, data analysis, IT support, IoT, dan digital system development."
+                />
+                <meta name="twitter:image" content={META_IMAGE} />
 
                 <script type="application/ld+json">{`
                     {
@@ -192,6 +207,7 @@ const Home = () => {
                         "name": "Sandi Aditya Ramdani",
                         "jobTitle": "IT Programmer & Data Analyst",
                         "url": "${SITE_URL}",
+                        "image": "${META_IMAGE}",
                         "email": "sandyramdani65@gmail.com",
                         "sameAs": [
                             "https://github.com/sandy39as",
@@ -278,7 +294,7 @@ const Home = () => {
                                     <div className={`relative lg:left-12 z-10 w-full opacity-90 transform transition-transform duration-500 ${isHovering ? "scale-105" : "scale-100"
                                         }`}>
                                         <img
-                                            src="Animation1.gif"
+                                            src="/sandiaditya/Animation1.gif"
                                             alt="IT Programmer Animation"
                                             className={`w-full h-full object-contain grayscale contrast-125 brightness-90 transition-all duration-500 ${isHovering
                                                     ? "scale-[95%] sm:scale-[90%] md:scale-[90%] lg:scale-[90%] rotate-2"

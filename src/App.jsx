@@ -63,7 +63,7 @@ function App() {
 
     return (
         <HelmetProvider>
-            <BrowserRouter>
+            <BrowserRouter basename="/sandiaditya">
                 <div className="relative min-h-screen bg-[#050505] text-white">
                     <div className="fixed inset-0 z-0 pointer-events-none">
                         <AnimatedBackground />
