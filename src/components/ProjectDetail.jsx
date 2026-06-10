@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Swal from "sweetalert2";
 import { toSlug } from "../utils/slug";
+import { supabase } from "../supabase";
 
 const TECH_ICONS = {
     React: Globe,
@@ -24,13 +25,18 @@ const TECH_ICONS = {
     Express: Cpu,
     Python: Code,
     Javascript: Code,
+    JavaScript: Code,
     HTML: Code,
     CSS: Code,
+    Laravel: Code,
+    Flutter: Code,
+    MySQL: Package,
+    ESP32: Cpu,
     default: Package,
 };
 
 const TechBadge = ({ tech }) => {
-    const Icon = TECH_ICONS[tech] || TECH_ICONS["default"];
+    const Icon = TECH_ICONS[tech] || TECH_ICONS.default;
 
     return (
         <div className="group relative overflow-hidden px-3 py-2 md:px-4 md:py-2.5 bg-white/[0.03] rounded-xl border border-neutral-800 hover:border-white/25 transition-all duration-300 cursor-default">
@@ -62,8 +68,8 @@ const FeatureItem = ({ feature }) => {
 };
 
 const ProjectStats = ({ project }) => {
-    const techStackCount = project?.TechStack?.length || 0;
-    const featuresCount = project?.Features?.length || 0;
+    const techStackCount = project?.tech_stack?.length || 0;
+    const featuresCount = project?.features?.length || 0;
 
     return (
         <div className="grid grid-cols-2 gap-3 md:gap-4 p-3 md:p-4 bg-neutral-950/70 rounded-xl overflow-hidden relative border border-neutral-800">
@@ -111,7 +117,7 @@ const ProjectStats = ({ project }) => {
 };
 
 const handleGithubClick = (githubLink) => {
-    if (githubLink === "Private") {
+    if (!githubLink || githubLink === "Private") {
         Swal.fire({
             icon: "info",
             title: "Source Code Private",
@@ -128,61 +134,134 @@ const handleGithubClick = (githubLink) => {
     return true;
 };
 
+const LoadingProject = () => (
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+        <div className="text-center space-y-6 animate-fadeIn">
+            <div className="w-16 h-16 md:w-24 md:h-24 mx-auto border-4 border-white/10 border-t-white rounded-full animate-spin" />
+
+            <h2 className="text-xl md:text-3xl font-bold text-white">
+                Loading Project...
+            </h2>
+        </div>
+    </div>
+);
+
+const ProjectNotFound = ({ navigate }) => (
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center px-4">
+        <div className="text-center max-w-lg bg-neutral-950/70 border border-neutral-800 rounded-2xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-3">
+                Project Not Found
+            </h2>
+
+            <p className="text-neutral-400 mb-6">
+                Data project tidak ditemukan. Coba kembali ke halaman portfolio.
+            </p>
+
+            <button
+                onClick={() => navigate("/")}
+                className="px-5 py-2.5 bg-white text-black rounded-xl font-semibold hover:bg-neutral-200 transition-colors"
+            >
+                Back to Home
+            </button>
+        </div>
+    </div>
+);
+
 const ProjectDetails = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
 
     const [project, setProject] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        const fetchProject = async () => {
+            window.scrollTo(0, 0);
+            setLoading(true);
 
-        const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
+            try {
+                const storedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
 
-        const selectedProject = storedProjects.find(
-            (p) => toSlug(p.Title) === slug
-        );
+                const localProject = storedProjects.find(
+                    (p) => toSlug(p.title || "") === slug
+                );
 
-        if (selectedProject) {
-            const enhancedProject = {
-                ...selectedProject,
-                Features: selectedProject.Features || [],
-                TechStack: selectedProject.TechStack || [],
-                Github: selectedProject.Github || "https://github.com/sandy39as",
-            };
+                if (localProject) {
+                    setProject({
+                        ...localProject,
+                        features: Array.isArray(localProject.features)
+                            ? localProject.features
+                            : [],
+                        tech_stack: Array.isArray(localProject.tech_stack)
+                            ? localProject.tech_stack
+                            : [],
+                        github: localProject.github || "Private",
+                    });
 
-            setProject(enhancedProject);
-        }
+                    setLoading(false);
+                    return;
+                }
+
+                const { data, error } = await supabase
+                    .from("projects")
+                    .select("*")
+                    .eq("is_published", true)
+                    .order("created_at", { ascending: false });
+
+                if (error) {
+                    console.error("Fetch project detail error:", error);
+                    setLoading(false);
+                    return;
+                }
+
+                const selectedProject = (data || []).find(
+                    (p) => toSlug(p.title || "") === slug
+                );
+
+                if (selectedProject) {
+                    setProject({
+                        ...selectedProject,
+                        features: Array.isArray(selectedProject.features)
+                            ? selectedProject.features
+                            : [],
+                        tech_stack: Array.isArray(selectedProject.tech_stack)
+                            ? selectedProject.tech_stack
+                            : [],
+                        github: selectedProject.github || "Private",
+                    });
+                }
+            } catch (error) {
+                console.error("Project detail error:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProject();
     }, [slug]);
 
-    if (!project) {
-        return (
-            <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-                <div className="text-center space-y-6 animate-fadeIn">
-                    <div className="w-16 h-16 md:w-24 md:h-24 mx-auto border-4 border-white/10 border-t-white rounded-full animate-spin" />
-
-                    <h2 className="text-xl md:text-3xl font-bold text-white">
-                        Loading Project...
-                    </h2>
-                </div>
-            </div>
-        );
+    if (loading) {
+        return <LoadingProject />;
     }
 
-    const projectUrl = `https://www.linkedin.com/in/sandiadityaramdani/project/${toSlug(project.Title)}`;
+    if (!project) {
+        return <ProjectNotFound navigate={navigate} />;
+    }
+
+    const projectUrl = `https://sandizr.com/project/${toSlug(project.title || "")}`;
 
     return (
         <>
             <Helmet>
-                <title>{project.Title} — Sandi Aditya Ramdani</title>
+                <title>{project.title} — Sandi Aditya Ramdani</title>
 
                 <meta
                     name="description"
                     content={
-                        project.Description
-                            ? project.Description.slice(0, 155)
-                            : `Project ${project.Title} by Sandi Aditya Ramdani.`
+                        project.description
+                            ? project.description.slice(0, 155)
+                            : `Project ${project.title} by Sandi Aditya Ramdani.`
                     }
                 />
 
@@ -191,33 +270,33 @@ const ProjectDetails = () => {
 
                 <meta
                     property="og:title"
-                    content={`${project.Title} — Sandi Aditya Ramdani`}
+                    content={`${project.title} — Sandi Aditya Ramdani`}
                 />
 
                 <meta
                     property="og:description"
-                    content={project.Description?.slice(0, 155)}
+                    content={project.description?.slice(0, 155)}
                 />
 
                 <meta property="og:url" content={projectUrl} />
                 <meta property="og:type" content="website" />
 
-                {project.Img && <meta property="og:image" content={project.Img} />}
+                {project.img && <meta property="og:image" content={project.img} />}
 
                 <script type="application/ld+json">{`
-          {
-            "@context": "https://schema.org",
-            "@type": "CreativeWork",
-            "name": "${project.Title}",
-            "description": "${project.Description?.replace(/"/g, '\\"')}",
-            "url": "${projectUrl}",
-            "author": {
-              "@type": "Person",
-              "name": "Sandi Aditya Ramdani",
-              "url": "https://www.linkedin.com/in/sandiadityaramdani/"
-            }
-          }
-        `}</script>
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "CreativeWork",
+                        "name": "${project.title}",
+                        "description": "${project.description?.replace(/"/g, '\\"') || ""}",
+                        "url": "${projectUrl}",
+                        "author": {
+                            "@type": "Person",
+                            "name": "Sandi Aditya Ramdani",
+                            "url": "https://sandizr.com/"
+                        }
+                    }
+                `}</script>
             </Helmet>
 
             <div className="min-h-screen bg-[#050505] px-[2%] sm:px-0 relative overflow-hidden">
@@ -245,7 +324,9 @@ const ProjectDetails = () => {
                             <div className="flex items-center space-x-1 md:space-x-2 text-sm md:text-base text-white/50">
                                 <span>Projects</span>
                                 <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
-                                <span className="text-white/90 truncate">{project.Title}</span>
+                                <span className="text-white/90 truncate">
+                                    {project.title}
+                                </span>
                             </div>
                         </div>
 
@@ -253,7 +334,7 @@ const ProjectDetails = () => {
                             <div className="space-y-6 md:space-y-10 animate-slideInLeft">
                                 <div className="space-y-4 md:space-y-6">
                                     <h1 className="text-3xl md:text-6xl font-bold bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent leading-tight">
-                                        {project.Title}
+                                        {project.title}
                                     </h1>
 
                                     <div className="relative h-1 w-16 md:w-24">
@@ -264,30 +345,34 @@ const ProjectDetails = () => {
 
                                 <div className="prose prose-invert max-w-none">
                                     <p className="text-base md:text-lg text-neutral-300 leading-relaxed">
-                                        {project.Description}
+                                        {project.description || "No description available."}
                                     </p>
                                 </div>
 
                                 <ProjectStats project={project} />
 
                                 <div className="flex flex-wrap gap-3 md:gap-4">
-                                    <a
-                                        href={project.Link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group relative inline-flex items-center space-x-1.5 md:space-x-2 px-4 md:px-8 py-2.5 md:py-4 bg-white text-black rounded-xl transition-all duration-300 border border-white/10 hover:bg-neutral-200 backdrop-blur-xl overflow-hidden text-sm md:text-base shadow-[0_0_25px_rgba(255,255,255,0.08)]"
-                                    >
-                                        <ExternalLink className="relative w-4 h-4 md:w-5 md:h-5 group-hover:rotate-12 transition-transform" />
-                                        <span className="relative font-semibold">Live Demo</span>
-                                    </a>
+                                    {project.link && (
+                                        <a
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group relative inline-flex items-center space-x-1.5 md:space-x-2 px-4 md:px-8 py-2.5 md:py-4 bg-white text-black rounded-xl transition-all duration-300 border border-white/10 hover:bg-neutral-200 backdrop-blur-xl overflow-hidden text-sm md:text-base shadow-[0_0_25px_rgba(255,255,255,0.08)]"
+                                        >
+                                            <ExternalLink className="relative w-4 h-4 md:w-5 md:h-5 group-hover:rotate-12 transition-transform" />
+                                            <span className="relative font-semibold">
+                                                Live Demo
+                                            </span>
+                                        </a>
+                                    )}
 
                                     <a
-                                        href={project.Github}
+                                        href={project.github || "#"}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="group relative inline-flex items-center space-x-1.5 md:space-x-2 px-4 md:px-8 py-2.5 md:py-4 bg-neutral-950/70 hover:bg-white/10 text-neutral-200 rounded-xl transition-all duration-300 border border-neutral-800 hover:border-white/20 backdrop-blur-xl overflow-hidden text-sm md:text-base"
                                         onClick={(e) =>
-                                            !handleGithubClick(project.Github) && e.preventDefault()
+                                            !handleGithubClick(project.github) && e.preventDefault()
                                         }
                                     >
                                         <Github className="relative w-4 h-4 md:w-5 md:h-5 group-hover:rotate-12 transition-transform" />
@@ -301,9 +386,9 @@ const ProjectDetails = () => {
                                         Technologies Used
                                     </h3>
 
-                                    {project.TechStack.length > 0 ? (
+                                    {project.tech_stack.length > 0 ? (
                                         <div className="flex flex-wrap gap-2 md:gap-3">
-                                            {project.TechStack.map((tech, index) => (
+                                            {project.tech_stack.map((tech, index) => (
                                                 <TechBadge key={index} tech={tech} />
                                             ))}
                                         </div>
@@ -316,23 +401,25 @@ const ProjectDetails = () => {
                             </div>
 
                             <div className="space-y-6 md:space-y-10 animate-slideInRight">
-                                <div className="relative rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl group">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                {project.img && (
+                                    <div className="relative rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl group">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                    <img
-                                        src={project.Img}
-                                        alt={project.Title}
-                                        className={`w-full object-cover transform transition-all duration-700 will-change-transform group-hover:scale-105 ${isImageLoaded ? "opacity-100" : "opacity-0"
-                                            }`}
-                                        onLoad={() => setIsImageLoaded(true)}
-                                    />
+                                        <img
+                                            src={project.img}
+                                            alt={project.title}
+                                            className={`w-full object-cover transform transition-all duration-700 will-change-transform group-hover:scale-105 ${isImageLoaded ? "opacity-100" : "opacity-0"
+                                                }`}
+                                            onLoad={() => setIsImageLoaded(true)}
+                                        />
 
-                                    {!isImageLoaded && (
-                                        <div className="absolute inset-0 bg-neutral-900 animate-pulse" />
-                                    )}
+                                        {!isImageLoaded && (
+                                            <div className="absolute inset-0 bg-neutral-900 animate-pulse" />
+                                        )}
 
-                                    <div className="absolute inset-0 border-2 border-white/0 group-hover:border-neutral-700 transition-colors duration-300 rounded-2xl" />
-                                </div>
+                                        <div className="absolute inset-0 border-2 border-white/0 group-hover:border-neutral-700 transition-colors duration-300 rounded-2xl" />
+                                    </div>
+                                )}
 
                                 <div className="bg-white/[0.02] backdrop-blur-xl rounded-2xl p-8 border border-neutral-800 space-y-6 hover:border-white/20 transition-colors duration-300 group">
                                     <h3 className="text-xl font-semibold text-white/90 flex items-center gap-3">
@@ -340,9 +427,9 @@ const ProjectDetails = () => {
                                         Key Features
                                     </h3>
 
-                                    {project.Features.length > 0 ? (
+                                    {project.features.length > 0 ? (
                                         <ul className="list-none space-y-2">
-                                            {project.Features.map((feature, index) => (
+                                            {project.features.map((feature, index) => (
                                                 <FeatureItem key={index} feature={feature} />
                                             ))}
                                         </ul>
@@ -358,76 +445,76 @@ const ProjectDetails = () => {
                 </div>
 
                 <style jsx>{`
-          @keyframes blob {
-            0% {
-              transform: translate(0px, 0px) scale(1);
-            }
-            33% {
-              transform: translate(30px, -50px) scale(1.1);
-            }
-            66% {
-              transform: translate(-20px, 20px) scale(0.9);
-            }
-            100% {
-              transform: translate(0px, 0px) scale(1);
-            }
-          }
+                    @keyframes blob {
+                        0% {
+                            transform: translate(0px, 0px) scale(1);
+                        }
+                        33% {
+                            transform: translate(30px, -50px) scale(1.1);
+                        }
+                        66% {
+                            transform: translate(-20px, 20px) scale(0.9);
+                        }
+                        100% {
+                            transform: translate(0px, 0px) scale(1);
+                        }
+                    }
 
-          .animate-blob {
-            animation: blob 10s infinite;
-          }
+                    .animate-blob {
+                        animation: blob 10s infinite;
+                    }
 
-          .animation-delay-2000 {
-            animation-delay: 2s;
-          }
+                    .animation-delay-2000 {
+                        animation-delay: 2s;
+                    }
 
-          .animation-delay-4000 {
-            animation-delay: 4s;
-          }
+                    .animation-delay-4000 {
+                        animation-delay: 4s;
+                    }
 
-          .animate-fadeIn {
-            animation: fadeIn 0.7s ease-out;
-          }
+                    .animate-fadeIn {
+                        animation: fadeIn 0.7s ease-out;
+                    }
 
-          .animate-slideInLeft {
-            animation: slideInLeft 0.7s ease-out;
-          }
+                    .animate-slideInLeft {
+                        animation: slideInLeft 0.7s ease-out;
+                    }
 
-          .animate-slideInRight {
-            animation: slideInRight 0.7s ease-out;
-          }
+                    .animate-slideInRight {
+                        animation: slideInRight 0.7s ease-out;
+                    }
 
-          @keyframes fadeIn {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
-          }
+                    @keyframes fadeIn {
+                        from {
+                            opacity: 0;
+                        }
+                        to {
+                            opacity: 1;
+                        }
+                    }
 
-          @keyframes slideInLeft {
-            from {
-              opacity: 0;
-              transform: translateX(-30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
+                    @keyframes slideInLeft {
+                        from {
+                            opacity: 0;
+                            transform: translateX(-30px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
 
-          @keyframes slideInRight {
-            from {
-              opacity: 0;
-              transform: translateX(30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-        `}</style>
+                    @keyframes slideInRight {
+                        from {
+                            opacity: 0;
+                            transform: translateX(30px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+                `}</style>
             </div>
         </>
     );

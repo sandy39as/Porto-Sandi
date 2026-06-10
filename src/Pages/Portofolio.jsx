@@ -316,10 +316,10 @@ export default function FullWidthTabs() {
                                         }
                                     >
                                         <CardProject
-                                            Img={project.Img}
-                                            Title={project.Title}
-                                            Description={project.Description}
-                                            Link={project.Link}
+                                            Img={project.img}
+                                            Title={project.title}
+                                            Description={project.description}
+                                            Link={project.link}
                                             id={project.id}
                                         />
                                     </div>
@@ -354,7 +354,7 @@ export default function FullWidthTabs() {
                                             index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
                                         }
                                     >
-                                        <Certificate ImgSertif={certificate.Img} />
+                                        <Certificate ImgSertif={certificate.img} />
                                     </div>
                                 ))}
                             </div>
