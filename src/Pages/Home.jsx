@@ -24,7 +24,7 @@ const StatusBadge = memo(() => (
 
 const MainTitle = memo(() => (
     <div className="space-y-2" data-aos="fade-up" data-aos-delay="600">
-        <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
+        <h1 className="text-[2.65rem] min-[390px]:text-5xl sm:text-6xl md:text-6xl lg:text-[3.6rem] xl:text-7xl font-bold tracking-tight leading-[1.05]">
             <span className="relative inline-block">
                 <span className="absolute -inset-2 bg-gradient-to-r from-white to-neutral-500 blur-2xl opacity-20"></span>
                 <span className="relative bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
@@ -231,10 +231,10 @@ const Home = () => {
 
             <div className="min-h-screen bg-[#050505] overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%]" id="Home">
                 <div className={`relative z-10 transition-all duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
-                    <div className="container mx-auto min-h-screen">
-                        <div className="flex flex-col lg:flex-row items-center justify-center h-screen md:justify-between gap-0 sm:gap-12 lg:gap-20">
+                    <div className="container mx-auto min-h-screen pt-20 sm:pt-24 lg:pt-28 xl:pt-0">
+                        <div className="flex flex-col lg:flex-row items-center justify-start lg:justify-between min-h-screen lg:min-h-[calc(100vh-7rem)] xl:h-screen gap-6 sm:gap-10 lg:gap-16 xl:gap-20">
                             <div
-                                className="w-full lg:w-1/2 space-y-6 sm:space-y-8 text-left lg:text-left order-1 lg:order-1 lg:mt-0"
+                                className="w-full lg:w-1/2 space-y-5 sm:space-y-6 lg:space-y-7 text-left lg:text-left order-1 lg:order-1 mt-0 lg:-mt-4 xl:mt-0"
                                 data-aos="fade-right"
                                 data-aos-delay="200"
                             >
@@ -280,7 +280,7 @@ const Home = () => {
                             </div>
 
                             <div
-                                className="w-full py-0 md:py-[10%] sm:py-0 lg:w-1/2 h-[260px] sm:h-[400px] lg:h-[600px] xl:h-[750px] relative flex items-center justify-center order-2 lg:order-2 mt-5 sm:mt-0"
+                                className="w-full py-0 md:py-[4%] sm:py-0 lg:w-1/2 h-[240px] min-[390px]:h-[280px] sm:h-[360px] lg:h-[500px] xl:h-[720px] relative flex items-center justify-center order-2 lg:order-2 mt-0 sm:mt-0"
                                 onMouseEnter={() => setIsHovering(true)}
                                 onMouseLeave={() => setIsHovering(false)}
                                 data-aos="fade-left"
@@ -297,8 +297,8 @@ const Home = () => {
                                             src="/sandiaditya/Animation1.gif"
                                             alt="IT Programmer Animation"
                                             className={`w-full h-full object-contain grayscale contrast-125 brightness-90 transition-all duration-500 ${isHovering
-                                                    ? "scale-[95%] sm:scale-[90%] md:scale-[90%] lg:scale-[90%] rotate-2"
-                                                    : "scale-[90%] sm:scale-[80%] md:scale-[80%] lg:scale-[80%]"
+                                                    ? "scale-[88%] sm:scale-[82%] md:scale-[82%] lg:scale-[78%] xl:scale-[82%] rotate-2"
+                                                    : "scale-[84%] sm:scale-[76%] md:scale-[76%] lg:scale-[72%] xl:scale-[78%]"
                                                 }`}
                                         />
                                     </div>
