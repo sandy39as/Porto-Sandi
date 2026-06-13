@@ -77,7 +77,7 @@ const Navbar = () => {
         setIsOpen(false);
     };
 
-    return (
+    return (j
         <nav
             className={`fixed w-full top-0 z-50 transition-all duration-500 border-b ${isOpen
                     ? "bg-[#050505] border-neutral-800"
@@ -87,13 +87,13 @@ const Navbar = () => {
                 }`}
         >
             <div className="mx-auto px-[5%] sm:px-[5%] lg:px-[10%]">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center justify-between h-14 sm:h-16">
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <a
                             href="#Home"
                             onClick={(e) => scrollToSection(e, "#Home")}
-                            className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent hover:from-neutral-200 hover:to-white transition-all duration-300"
+                            className="text-sm sm:text-lg lg:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent hover:from-neutral-200 hover:to-white transition-all duration-300"
                         >
                             Sandi Aditya Ramdani
                         </a>
