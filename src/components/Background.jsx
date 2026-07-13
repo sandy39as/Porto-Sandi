@@ -22,7 +22,7 @@ const AnimatedBackground = () => {
 				if (!blob) return
 
 				const initialPos = initialPositions[index]
-
+.
 				const xOffset = Math.sin(newScroll / 100 + index * 0.5) * 340
 				const yOffset = Math.cos(newScroll / 100 + index * 0.5) * 40
 
