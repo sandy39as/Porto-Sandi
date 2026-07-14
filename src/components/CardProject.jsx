@@ -17,7 +17,7 @@ const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
             alert("Project details are not available");
         }
     };
-
+aaa
     return (
         <div className="group relative w-full">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-neutral-500 rounded-xl blur opacity-10 group-hover:opacity-25 transition duration-500" />
