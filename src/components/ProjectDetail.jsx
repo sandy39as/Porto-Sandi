@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
     ArrowLeft,
     ExternalLink,
-    Github,aaa
+    Github,
     Code2,
     Star,
     ChevronRight,
