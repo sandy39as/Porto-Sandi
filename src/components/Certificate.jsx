@@ -12,7 +12,7 @@ import { ImageIcon } from "lucide-react";
 
 const Certificate = ({ ImgSertif }) => {
     const [open, setOpen] = useState(false);
-a
+
     const handleOpen = () => {
         if (!ImgSertif) return;
         setOpen(true);
