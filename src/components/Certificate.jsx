@@ -9,7 +9,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { ImageIcon } from "lucide-react";
-aaa
+
 const Certificate = ({ ImgSertif }) => {
     const [open, setOpen] = useState(false);
 
