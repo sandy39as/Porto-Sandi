@@ -3,7 +3,7 @@ import { Eye, ArrowRight, ExternalLink } from 'lucide-react';
 
 const ProjectCardModal = ({ title, description, link }) => {
   const [isOpen, setIsOpen] = useState(false);
-aa
+
   return (
     <>
       <button
