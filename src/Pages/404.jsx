@@ -9,7 +9,7 @@ export default function NotFoundPage() {
     const handleGoHome = () => {
         window.location.href = "/";
     };
-a
+
     return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center px-4 overflow-hidden">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:24px_24px]" />
