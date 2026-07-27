@@ -12,7 +12,7 @@ node_modules
 # Ignore dist folder
 dist/
 *.dist
-
+a
 .PresenceWidget.jsx
 
 # Editor directories and files
