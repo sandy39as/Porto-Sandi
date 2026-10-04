@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';aaa
+import { createClient } from '@supabase/supabase-js';
 
 // Access environment variables using import.meta.env for Vite
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL; 
