@@ -9,5 +9,5 @@ if (!supabaseUrl || !supabaseKey) {
   console.error("Supabase Anon Key:", supabaseKey);
   throw new Error("Supabase URL and Anon Key are required. Check your .env file and ensure they are prefixed with VITE_ and the dev server was restarted.");
 }
-aa
+
 export const supabase = createClient(supabaseUrl, supabaseKey);
